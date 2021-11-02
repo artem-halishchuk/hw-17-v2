@@ -39,22 +39,54 @@ export default class MenuMain {
             this.name = input.value;
             this.createElem();
             input.value = '';
-            this.show(this.arrElem); //отображение созданого элемента
+            /*fetch('/usersController', {
+                method:'GET',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+            }).then(r => r.json()).then(r => this.show(r));*/
+            //this.show(this.arrElem); //отображение созданого элемента
         });
 
         this.ul = document.createElement('ul');
         this.ul.classList.add('content-list');
         container.append(this.ul);
-        this.show();
+        fetch('/usersController', {
+            method:'GET',
+            headers: {
+                'Content-Type':'application/json'
+            },
+        }).then(r => r.json()).then(r => this.show(r));
+        //this.show();
         this.deactivateElement();
     }
     createElem() {
-        this.arrElem.push(new User(this.name, this.arrElem.length));
+        // let getUsers = fetch('/usersController', {
+        //     method:'GET',
+        //     headers: {
+        //         'Content-Type':'application/json'
+        //     },
+        // }).then(r => r.json()).then(r => {
+        //     console.log(r.length)
+        //
+        // });
+        let newUser = new User(this.name);
+        console.log(JSON.stringify(newUser));
+        fetch('/usersController', {
+            method:'POST',
+            headers: {
+                'Content-Type':'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(newUser),
+        }).then(r=>r.json()).then(r => this.show(r));
+
+        //this.arrElem.push(new User(this.name, this.arrElem.length));
     }
-    show() {
+    show(arr) {
         this.ul.innerHTML = '';
-        if (!this.arrElem) return;
-        this.arrElem.map((e, i) => {
+        if (!arr) return;
+        arr.map((e, i) => {
+            if(!e) return
             let li = document.createElement('li');
             li.classList.add('content-item');
             this.ul.append(li);
@@ -129,5 +161,11 @@ export default class MenuMain {
                 document.querySelector('.menu-note').style.display = 'none';
             }
         })
+    }
+}
+class User {
+    constructor(name) {
+        this.name = name;
+        this.notes = [];
     }
 }
