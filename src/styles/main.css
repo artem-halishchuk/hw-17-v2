@@ -33,7 +33,7 @@ body {
     text-align: center;
     margin-top: 10px;
 }
-.form-name, .note-heading, .form-search, .note-name, .note-form {
+.form-name, .note-heading, .form-search, .note-name, .note-form, .form-text {
     text-align: center;
     box-shadow: 0 4px 4px 0 rgba(58, 58, 58, 0.5);
     border-radius: 16px;
@@ -46,10 +46,10 @@ body {
 .note-form {
     text-align: start;
 }
-.form-name:focus, .note-form:focus, .form-search:focus, .note-name:focus, note-form:focus {
+.form-name:focus, .note-form:focus, .form-search:focus, .note-name:focus, note-form:focus, form-text:focus {
     border: 2px solid rgb(171, 101, 9);
 }
-.form-name:hover, .note-form:hover, .form-search:hover, .note-name:hover, note-form:hover {
+.form-name:hover, .note-form:hover, .form-search:hover, .note-name:hover, note-form:hover, form-text:hover {
     border: 2px solid rgb(17, 196, 236);
 }
 .form-add {
@@ -146,6 +146,14 @@ body {
 .note-form {
     flex-grow: 1;
     margin-top: 20px;
+    margin-bottom: 5px;
     padding: 10px 5px;
     width: auto;
+}
+.form-text {
+    display: block;
+    height: 200px;
+    text-align: left;
+    width: auto;
+    margin-top: 10px;
 }

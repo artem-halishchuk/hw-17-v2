@@ -8,23 +8,24 @@ function usersController(app, path) {
 }
 class UsersController{
     constructor() {
-        this.users = [];
+        this.notes = [petia, petia2];
     }
     addUser(request, response) {
-        let user = request.body;
-        console.log(user); //undefined ????????????
-        this.users.push(user);
-        response.send(this.users);
+        let note = request.body;
+        this.notes.push(note);
+        response.send(this.notes);
     }
     getUsers(request, response) {
-        response.send(this.users);
+        response.send(this.notes);
     }
 }
-class User {
-    constructor(name) {
+class Note {
+    constructor(name, note, id) {
         this.name = name;
-        this.notes = [];
+        this.note = note;
+        this.id = id;
     }
 }
-let petia = new User('petia', 1);
+let petia = new Note('petia', 'text 1');
+let petia2 = new Note('petia2', 'text 2');
 module.exports = usersController;

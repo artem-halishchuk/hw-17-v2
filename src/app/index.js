@@ -6,7 +6,7 @@ let users = [];
 
 document.addEventListener('DOMContentLoaded', function() {
     let getBlockApp = document.querySelector('.app');
-    let menuMain = new MenuMain(getBlockApp, users, '.menu-notes', 'menu-main');
+    let menuMain = new MenuMain(getBlockApp, users, '.menu-note', 'menu-main');
 
     // setTimeout(() => {
     //     let getUsers = fetch('/usersController', {
