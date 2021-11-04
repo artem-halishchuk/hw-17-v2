@@ -12,8 +12,15 @@ class UsersController{
     }
     addUser(request, response) {
         let note = request.body;
-        this.notes.push(note);
-        response.send(this.notes);
+
+        if (note > -1) {
+            response.send(this.notes[parseFloat(note)]);
+        }
+        else {
+            this.notes.push(note);
+            response.send(this.notes);
+        }
+
     }
     getUsers(request, response) {
         response.send(this.notes);
