@@ -1,7 +1,6 @@
 export default class MenuMain {
     constructor(blockInsert, arrElem, removeBlock, container) {
         this.blockInsert = blockInsert;
-        this.arrElem = arrElem;
         this.activeElement = null;
         this.ul = null;
         this.removeBlock = removeBlock;
@@ -17,10 +16,10 @@ export default class MenuMain {
         formWrapper.classList.add('form');
         container.append(formWrapper);
 
-        let massageDeactivate = document.createElement('p');
-        massageDeactivate.classList.add('massageDeactivate');
-        massageDeactivate.textContent = 'Клик по полю меню дективирует активный компонент';
-        container.append(massageDeactivate);
+        // let massageDeactivate = document.createElement('p');
+        // massageDeactivate.classList.add('massageDeactivate');
+        // massageDeactivate.textContent = 'Клик по полю меню дективирует активный компонент';
+        // container.append(massageDeactivate);
 
         let input = document.createElement('input');
         input.placeholder = 'Имя заметки';
@@ -48,7 +47,17 @@ export default class MenuMain {
 
             input.value = '';
             inputText.value = '';
+            fetch('/usersController', {
+                method:'GET',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+            }).then(r => r.json()).then(r => {
+                this.show(r);
+                console.log('active element ----' + this.activeElement);
+            });
         });
+
         this.ul = document.createElement('ul');
         this.ul.classList.add('content-list');
         container.append(this.ul);
@@ -57,8 +66,11 @@ export default class MenuMain {
             headers: {
                 'Content-Type':'application/json'
             },
-        }).then(r => r.json()).then(r => this.show(r));
-        this.deactivateElement();
+        }).then(r => r.json()).then(r => {
+            this.show(r);
+            this.deactivateElement();
+        });
+
     }
     createElem() {
         let newNote = new Note(this.name, this.text);
@@ -69,7 +81,9 @@ export default class MenuMain {
                 'Content-Type':'application/json;charset=utf-8'
             },
             body: JSON.stringify(newNote),
-        }).then(r=>r.json()).then(r => this.show(r));
+        }).then(r=>r.json()).then(r => {
+            this.show(r);
+        });
     }
     show(arr) {
         this.ul.innerHTML = '';
@@ -118,14 +132,6 @@ export default class MenuMain {
         });
 
     }
-    deleteElem(event) {
-        let index = event.target.parentNode.dataset.index;
-        if (this.arrElem[index] === this.activeElement) this.activeElement = null;
-        this.arrElem.splice(event.target.parentNode.dataset.index, 1);
-        if (event.target.parentNode.firstChild.matches('.content-item-name-active')) {
-            if (document.querySelector('.menu-note')) document.querySelector('.menu-note').style.display = 'none';
-        }
-    }
     display() {
         if ((!this.activeElement) && document.querySelector(this.removeBlock)) {
             document.querySelector(this.removeBlock).style.display = 'none';
@@ -139,7 +145,6 @@ export default class MenuMain {
             let getBlockApp = document.querySelector('.app');
             menuNote = new MenuNote(getBlockApp, this.index);
             menuNote.createMenu();
-            //menuNote.display();
         }
     }
     deactivateElement() {
@@ -148,34 +153,22 @@ export default class MenuMain {
             click = event.target;
             if (!click.matches(`.${this.container}`)) return;
             this.activeElement = null;
-            this.display();
-            if (document.querySelector('body .menu-note')) {
-                document.querySelector('.menu-note').style.display = 'none';
-            }
+
+            fetch('/usersController', {
+                method:'GET',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+            }).then(r => r.json()).then(r => {
+                this.show(r);
+                this.display();
+                if (document.querySelector('body .menu-note')) {
+                    document.querySelector('.menu-note').style.display = 'none';
+                }
+            });
+
+
         })
-    }
-}
-
-
-class MenuNotes extends MenuMain {
-    constructor(blockInsert, arrElem, removeBlock, container) {
-        super(blockInsert, arrElem, removeBlock, container);
-    }
-    createElem() {
-        this.arrElem.push(new Note(this.name));
-    }
-    display() {
-        if ((!this.activeElement) && document.querySelector(this.removeBlock)) {
-            document.querySelector(this.removeBlock).style.display = 'none';
-        }
-        //let menuNote;
-        if (this.activeElement) {
-            if (document.querySelector(this.removeBlock)) {
-                document.querySelector(this.removeBlock).remove();
-            }
-            let menuNote = new MenuNote(getBlockApp, this.activeElement);
-            menuNote.createMenu();
-        }
     }
 }
 
@@ -189,12 +182,12 @@ class MenuNote {
         container.classList.add('menu-note');
         this.blockInsert.append(container);
 
-        let input = document.createElement('input');
-        input.classList.add('input', 'note-name');
+        let input = document.createElement('div');
+        input.classList.add('note-form', 'note-form__name');
         container.append(input);
 
-        let textarea = document.createElement('textarea');
-        textarea.classList.add('input', 'note-form');
+        let textarea = document.createElement('div');
+        textarea.classList.add('note-form', 'note-form__text');
         container.append(textarea);
 
         fetch('/usersController', {
@@ -203,8 +196,9 @@ class MenuNote {
                 'Content-Type':'application/json'
             },
         }).then(r => r.json()).then(r => {
-            input.value = r[this.index].name;
-            textarea.textContent = r[this.index].note;
+            console.log(r);
+            input.innerHTML = r[this.index].name;
+            textarea.innerHTML = r[this.index].note;
         })
     }
 }
@@ -212,6 +206,5 @@ class Note {
     constructor(name, note, id) {
         this.name = name;
         this.note = note;
-        this.id = id;
     }
 }

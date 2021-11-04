@@ -20,10 +20,9 @@ class UsersController{
     }
 }
 class Note {
-    constructor(name, note, id) {
+    constructor(name, note) {
         this.name = name;
         this.note = note;
-        this.id = id;
     }
 }
 let petia = new Note('petia', 'text 1');

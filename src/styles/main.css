@@ -7,7 +7,7 @@ body {
     display:flex;
     gap: 2px;
 }
-.menu-main, .menu-notes, .menu-note {
+.menu-main, .menu-notes {
     display: flex;
     flex-direction: column;
     width: 318px;
@@ -43,13 +43,10 @@ body {
     text-shadow: #818181 2px 1px 5px;
     width: 100%;
 }
-.note-form {
-    text-align: start;
-}
-.form-name:focus, .note-form:focus, .form-search:focus, .note-name:focus, note-form:focus, form-text:focus {
+.form-name:focus, .form-search:focus, .note-name:focus, .form-text:focus {
     border: 2px solid rgb(171, 101, 9);
 }
-.form-name:hover, .note-form:hover, .form-search:hover, .note-name:hover, note-form:hover, form-text:hover {
+.form-name:hover, .form-search:hover, .note-name:hover, .form-text:hover {
     border: 2px solid rgb(17, 196, 236);
 }
 .form-add {
@@ -156,4 +153,25 @@ body {
     text-align: left;
     width: auto;
     margin-top: 10px;
+}
+.menu-note {
+    display: flex;
+    flex-direction: column;
+    width: 318px;
+    /*width: 100%;*/
+    border: 1px solid #000000;
+    padding: 10px;
+    background-color: #55968a;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 4px 0 rgba(58, 58, 58, 0.5);
+    border-radius: 5px;
+    min-height: calc(100vh - 22px);
+}
+.note-form {
+    background-color: white;
+}
+.note-form__text {
+    text-align: start;
+    height: calc(100% - 50px);
 }
